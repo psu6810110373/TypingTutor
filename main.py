@@ -104,6 +104,7 @@ class TypingTutorApp(App):
         sm.add_widget(MainMenuScreen(name='menu'))
         sm.add_widget(SettingsScreen(name='settings'))
         sm.add_widget(GameScreen(name='game'))
+        sm.add_widget(ResultScreen(name='result'))
         return sm
 
 if __name__ == '__main__':
