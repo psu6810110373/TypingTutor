@@ -76,12 +76,16 @@ class ResultScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
+
         # สร้าง Widget (Labels, Buttons)
         title_label = Label(text="GAME OVER", font_size=50, bold=True, size_hint=(1, 0.3))        
         play_again_btn = Button(text="Play Again", font_size=30, size_hint=(1, 0.15), background_color=(0.2, 0.7, 0.3, 1))
         menu_btn = Button(text="Main Menu", font_size=30, size_hint=(1, 0.15))
+        self.wpm_label = Label(text="WPM: 0", font_size=40, size_hint=(1, 0.2))                 #สองตัวนี้ใช้ self เพราะในอนาคตจะค้องแก้คะแนน ทำให้ต้องเรียกใช้ตัวแปรนี้ในฟังก์ชันอื่น เพราะถ้าไม่ใช้ self ฟังก์ชันอื่นจะหาไม่เจอ
+        self.acc_label = Label(text="Accuracy: 0%", font_size=40, size_hint=(1, 0.2))      
+
         
-        
+
 class TypingTutorApp(App):
     def build(self):
         sm = ScreenManager()
