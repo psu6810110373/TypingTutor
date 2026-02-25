@@ -52,6 +52,12 @@ class SettingsScreen(Screen):
         title = Label(text="SETTINGS", font_size=50, bold=True, size_hint=(1, 0.3))
         subtitle = Label(text="Select Time Limit:", font_size=30, size_hint=(1, 0.1))
 
+        # สร้าง Widget (Buttons สำหรับเลือกเวลา)
+        time_layout = BoxLayout(orientation='horizontal', spacing=20, size_hint=(1, 0.2))
+        self.btn_15 = Button(text="15 Sec", font_size=30, background_color=(0.5, 0.5, 0.5, 1))
+        self.btn_30 = Button(text="30 Sec", font_size=30, background_color=(0.2, 0.7, 0.3, 1)) 
+        self.btn_60 = Button(text="60 Sec", font_size=30, background_color=(0.5, 0.5, 0.5, 1))
+        
         back_btn = Button(text="Back to Menu", font_size=30, size_hint=(1, 0.2))
         back_btn.bind(on_press=self.go_back)
         layout.add_widget(back_btn)
