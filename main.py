@@ -83,8 +83,14 @@ class ResultScreen(Screen):
         menu_btn = Button(text="Main Menu", font_size=30, size_hint=(1, 0.15))
         self.wpm_label = Label(text="WPM: 0", font_size=40, size_hint=(1, 0.2))                 #สองตัวนี้ใช้ self เพราะในอนาคตจะค้องแก้คะแนน ทำให้ต้องเรียกใช้ตัวแปรนี้ในฟังก์ชันอื่น เพราะถ้าไม่ใช้ self ฟังก์ชันอื่นจะหาไม่เจอ
         self.acc_label = Label(text="Accuracy: 0%", font_size=40, size_hint=(1, 0.2))      
-
         
+        # นำเข้า Layout
+        layout.add_widget(title_label)
+        layout.add_widget(self.wpm_label)
+        layout.add_widget(self.acc_label)
+        layout.add_widget(play_again_btn)
+        layout.add_widget(menu_btn)
+        self.add_widget(layout)
 
 class TypingTutorApp(App):
     def build(self):
