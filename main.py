@@ -60,8 +60,32 @@ class SettingsScreen(Screen):
         
         back_btn = Button(text="Back to Menu", font_size=30, size_hint=(1, 0.2))
         back_btn.bind(on_press=self.go_back)
+
+    # สร้างฟังก์ชัน Callback สำหรับปุ่มเวลา
+    def set_time_15(self, instance):
+        self.selected_time = 15
+        self.update_button_colors(self.btn_15)
+        print(f"Time selected: {self.selected_time} seconds") # ปริ้นท์เช็คใน Console
+
+    def set_time_30(self, instance):
+        self.selected_time = 30
+        self.update_button_colors(self.btn_30)
+        print(f"Time selected: {self.selected_time} seconds")
+
+    def set_time_60(self, instance):
+        self.selected_time = 60
+        self.update_button_colors(self.btn_60)
+        print(f"Time selected: {self.selected_time} seconds")
+
+    def update_button_colors(self, active_btn):
+        # รีเซ็ตทุกปุ่มให้เป็นสีเทา
+        self.btn_15.background_color = (0.5, 0.5, 0.5, 1)
+        self.btn_30.background_color = (0.5, 0.5, 0.5, 1)
+        self.btn_60.background_color = (0.5, 0.5, 0.5, 1)
+        active_btn.background_color = (0.2, 0.7, 0.3, 1) 
         layout.add_widget(back_btn)
         self.add_widget(layout)
+
     def go_back(self, instance):
         self.manager.current = 'menu'
 
@@ -72,14 +96,13 @@ class GameScreen(Screen):
         layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
         layout.add_widget(Label(text="Game Screen", font_size=40))
         
-        # เพิ่มปุ่ม Simulate ที่หายไปตรงนี้ครับ
         finish_btn = Button(text="Simulate Finish (Go to Result)", font_size=30, size_hint=(1, 0.2), background_color=(0.8, 0.5, 0.2, 1))
         finish_btn.bind(on_press=self.go_to_result)
         
         back_btn = Button(text="Give Up (Back to Menu)", font_size=30, size_hint=(1, 0.2))
         back_btn.bind(on_press=self.go_back)
         
-        layout.add_widget(finish_btn) # เพิ่มปุ่มเข้า Layout
+        layout.add_widget(finish_btn) 
         layout.add_widget(back_btn)
         self.add_widget(layout)
 
