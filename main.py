@@ -41,6 +41,7 @@ class MainMenuScreen(Screen):
     def exit_app(self, instance):
         App.get_running_app().stop()
 
+
 class SettingsScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -53,6 +54,7 @@ class SettingsScreen(Screen):
         self.add_widget(layout)
     def go_back(self, instance):
         self.manager.current = 'menu'
+
 
 class GameScreen(Screen):
     def __init__(self, **kwargs):
@@ -69,6 +71,17 @@ class GameScreen(Screen):
     def go_back(self, instance):
         self.manager.current = 'menu'
 
+
+class ResultScreen(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
+        # สร้าง Widget (Labels, Buttons)
+        title_label = Label(text="GAME OVER", font_size=50, bold=True, size_hint=(1, 0.3))        
+        play_again_btn = Button(text="Play Again", font_size=30, size_hint=(1, 0.15), background_color=(0.2, 0.7, 0.3, 1))
+        menu_btn = Button(text="Main Menu", font_size=30, size_hint=(1, 0.15))
+        
+        
 class TypingTutorApp(App):
     def build(self):
         sm = ScreenManager()
