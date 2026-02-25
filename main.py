@@ -4,8 +4,10 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.core.window import Window
+from kivy.utils import get_color_from_hex
 
 Window.size = (900, 600)
+Window.clearcolor = get_color_from_hex('#1E1E2E')
 
 class MainMenuScreen(Screen):
     def __init__(self, **kwargs):
