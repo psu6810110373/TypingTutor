@@ -92,6 +92,12 @@ class ResultScreen(Screen):
         layout.add_widget(menu_btn)
         self.add_widget(layout)
 
+        # ฟังก์ชัน Callback สำหรับหน้า Result
+        def play_again(self, instance):
+            self.manager.current = 'game'  # กลับไปเล่นใหม่
+        def go_to_menu(self, instance):
+            self.manager.current = 'menu'  # กลับหน้าแรก
+
 class TypingTutorApp(App):
     def build(self):
         sm = ScreenManager()
