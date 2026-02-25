@@ -47,8 +47,11 @@ class SettingsScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
-        layout.add_widget(Label(text="Settings Screen (Coming Soon)", font_size=40))
-        
+
+        # สร้าง Widget (Labels)
+        title = Label(text="SETTINGS", font_size=50, bold=True, size_hint=(1, 0.3))
+        subtitle = Label(text="Select Time Limit:", font_size=30, size_hint=(1, 0.1))
+
         back_btn = Button(text="Back to Menu", font_size=30, size_hint=(1, 0.2))
         back_btn.bind(on_press=self.go_back)
         layout.add_widget(back_btn)
