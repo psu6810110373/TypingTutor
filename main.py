@@ -6,6 +6,7 @@ from kivy.uix.label import Label
 from kivy.core.window import Window
 
 Window.size = (900, 600)
+
 class MainMenuScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -59,18 +60,24 @@ class SettingsScreen(Screen):
 class GameScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        layout = BoxLayout(orientation='vertical', padding=50)
-        layout.add_widget(Label(text="Game Screen (Coming Soon)", font_size=40))
+        layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
+        layout.add_widget(Label(text="Game Screen", font_size=40))
         
-        # ปุ่มชั่วคราวให้กดกลับเมนูได้
+        # เพิ่มปุ่ม Simulate ที่หายไปตรงนี้ครับ
+        finish_btn = Button(text="Simulate Finish (Go to Result)", font_size=30, size_hint=(1, 0.2), background_color=(0.8, 0.5, 0.2, 1))
+        finish_btn.bind(on_press=self.go_to_result)
+        
         back_btn = Button(text="Give Up (Back to Menu)", font_size=30, size_hint=(1, 0.2))
         back_btn.bind(on_press=self.go_back)
+        
+        layout.add_widget(finish_btn) # เพิ่มปุ่มเข้า Layout
         layout.add_widget(back_btn)
         self.add_widget(layout)
 
     def go_back(self, instance):
         self.manager.current = 'menu'
-
+    def go_to_result(self, instance):
+        self.manager.current = 'result'
 
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
@@ -79,12 +86,15 @@ class ResultScreen(Screen):
 
         # สร้าง Widget (Labels, Buttons)
         title_label = Label(text="GAME OVER", font_size=50, bold=True, size_hint=(1, 0.3))        
+        self.wpm_label = Label(text="WPM: 0", font_size=40, size_hint=(1, 0.2))      
+        self.acc_label = Label(text="Accuracy: 0%", font_size=40, size_hint=(1, 0.2))      
         play_again_btn = Button(text="Play Again", font_size=30, size_hint=(1, 0.15), background_color=(0.2, 0.7, 0.3, 1))
         menu_btn = Button(text="Main Menu", font_size=30, size_hint=(1, 0.15))
-        self.wpm_label = Label(text="WPM: 0", font_size=40, size_hint=(1, 0.2))                 #สองตัวนี้ใช้ self เพราะในอนาคตจะค้องแก้คะแนน ทำให้ต้องเรียกใช้ตัวแปรนี้ในฟังก์ชันอื่น เพราะถ้าไม่ใช้ self ฟังก์ชันอื่นจะหาไม่เจอ
-        self.acc_label = Label(text="Accuracy: 0%", font_size=40, size_hint=(1, 0.2))      
         
-        # นำเข้า Layout
+        #  Bind (เชื่อมปุ่มกับฟังก์ชัน)
+        play_again_btn.bind(on_press=self.play_again)
+        menu_btn.bind(on_press=self.go_to_menu)
+
         layout.add_widget(title_label)
         layout.add_widget(self.wpm_label)
         layout.add_widget(self.acc_label)
@@ -92,11 +102,10 @@ class ResultScreen(Screen):
         layout.add_widget(menu_btn)
         self.add_widget(layout)
 
-        # ฟังก์ชัน Callback สำหรับหน้า Result
-        def play_again(self, instance):
-            self.manager.current = 'game'  # กลับไปเล่นใหม่
-        def go_to_menu(self, instance):
-            self.manager.current = 'menu'  # กลับหน้าแรก
+    def play_again(self, instance):
+        self.manager.current = 'game'
+    def go_to_menu(self, instance):
+        self.manager.current = 'menu'
 
 class TypingTutorApp(App):
     def build(self):
