@@ -72,6 +72,15 @@ class SettingsScreen(Screen):
         back_btn = Button(text="Back to Menu", font_size=30, size_hint=(1, 0.2))
         back_btn.bind(on_press=self.go_back)
 
+        #นำแต่ละwidgetใส่ในlayout
+        layout.add_widget(title)
+        layout.add_widget(subtitle)
+        layout.add_widget(time_layout)
+        layout.add_widget(back_btn)
+        self.add_widget(layout)
+
+        self.selected_time = 30
+
     # สร้างฟังก์ชัน Callback สำหรับปุ่มเวลา
     def set_time_15(self, instance):
         self.selected_time = 15
@@ -94,8 +103,7 @@ class SettingsScreen(Screen):
         self.btn_30.background_color = (0.5, 0.5, 0.5, 1)
         self.btn_60.background_color = (0.5, 0.5, 0.5, 1)
         active_btn.background_color = (0.2, 0.7, 0.3, 1) 
-        layout.add_widget(back_btn)
-        self.add_widget(layout)
+        
 
     def go_back(self, instance):
         self.manager.current = 'menu'
