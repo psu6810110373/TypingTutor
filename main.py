@@ -58,6 +58,12 @@ class SettingsScreen(Screen):
         self.btn_30 = Button(text="30 Sec", font_size=30, background_color=(0.2, 0.7, 0.3, 1)) 
         self.btn_60 = Button(text="60 Sec", font_size=30, background_color=(0.5, 0.5, 0.5, 1))
         
+        # ผูก Callbacks ให้ตรวจจับการกดปุ่ม
+        self.btn_15.bind(on_press=self.set_time_15)
+        self.btn_30.bind(on_press=self.set_time_30)
+        self.btn_60.bind(on_press=self.set_time_60)
+
+        #ปุ่มเมนูหลัก
         back_btn = Button(text="Back to Menu", font_size=30, size_hint=(1, 0.2))
         back_btn.bind(on_press=self.go_back)
 
