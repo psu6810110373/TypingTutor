@@ -63,6 +63,11 @@ class SettingsScreen(Screen):
         self.btn_30.bind(on_press=self.set_time_30)
         self.btn_60.bind(on_press=self.set_time_60)
 
+        #นำปุ่มเวลาใส่ในlayout
+        time_layout.add_widget(self.btn_15)
+        time_layout.add_widget(self.btn_30)
+        time_layout.add_widget(self.btn_60)
+
         #ปุ่มเมนูหลัก
         back_btn = Button(text="Back to Menu", font_size=30, size_hint=(1, 0.2))
         back_btn.bind(on_press=self.go_back)
