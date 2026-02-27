@@ -20,9 +20,9 @@ class MainMenuScreen(Screen):
         title_label = Label(text="TYPING TUTOR", font_size=50, bold=True, size_hint=(1, 0.4),color=get_color_from_hex('#89B4FA'))
         
         # สร้าง Widget (Buttons)
-        start_btn = Button(text="Start Game", font_size=30, size_hint=(0.7, 0.2), background_color= get_color_from_hex('#A6E3A1'),)
-        settings_btn = Button(text="Settings", font_size=30, size_hint=(0.7, 0.2),background_color=get_color_from_hex('#89DCEB'))
-        exit_btn = Button(text="Exit", font_size=30, size_hint=(0.7, 0.2), background_color=get_color_from_hex('#F38BA8'))
+        start_btn = Button(text="Start Game", font_size=30, size_hint=(1, 0.2), background_color= get_color_from_hex('#A6E3A1'),)
+        settings_btn = Button(text="Settings", font_size=30, size_hint=(1, 0.2),background_color=get_color_from_hex('#89DCEB'))
+        exit_btn = Button(text="Exit", font_size=30, size_hint=(1, 0.2), background_color=get_color_from_hex('#F38BA8'))
         
         # ผูก Callback เมื่อกดปุ่ม 
         start_btn.bind(on_press=self.go_to_game)
@@ -51,8 +51,8 @@ class SettingsScreen(Screen):
         layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
 
         # สร้าง Widget (Labels)
-        title = Label(text="SETTINGS", font_size=50, bold=True, size_hint=(1, 0.3))
-        subtitle = Label(text="Select Time Limit:", font_size=30, size_hint=(1, 0.1))
+        title = Label(text="SETTINGS", font_size=50, bold=True, size_hint=(1, 0.3),color=get_color_from_hex('#89B4FA'))
+        subtitle = Label(text="Select Time Limit:", font_size=30, size_hint=(1, 0.1),color=get_color_from_hex('#CDD6F4'))
 
         # สร้าง Widget (Buttons สำหรับเลือกเวลา)
         time_layout = BoxLayout(orientation='horizontal', spacing=20, size_hint=(1, 0.2))
@@ -71,7 +71,7 @@ class SettingsScreen(Screen):
         time_layout.add_widget(self.btn_60)
 
         #ปุ่มเมนูหลัก
-        back_btn = Button(text="Back to Menu", font_size=30, size_hint=(1, 0.2))
+        back_btn = Button(text="Back to Menu", font_size=30, size_hint=(1, 0.2),background_color=get_color_from_hex('#F38BA8'))
         back_btn.bind(on_press=self.go_back)
 
         #นำแต่ละwidgetใส่ในlayout
