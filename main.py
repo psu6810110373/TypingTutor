@@ -17,12 +17,12 @@ class MainMenuScreen(Screen):
         layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
         
         # สร้าง Widget (Label)
-        title_label = Label(text="TYPING TUTOR", font_size=50, bold=True, size_hint=(1, 0.4),color=get_color_from_hex('#89B4FA'))
+        title_label = Label(text="TYPING TUTOR", font_size=50, bold=True, size_hint=(1, 0.4),color=get_color_from_hex('#89B4FA'),font_name='Bungee-Regular.ttf')
         
         # สร้าง Widget (Buttons)
-        start_btn = Button(text="Start Game", font_size=30, size_hint=(1, 0.2), background_color= get_color_from_hex('#A6E3A1'),)
-        settings_btn = Button(text="Settings", font_size=30, size_hint=(1, 0.2),background_color=get_color_from_hex('#89DCEB'))
-        exit_btn = Button(text="Exit", font_size=30, size_hint=(1, 0.2), background_color=get_color_from_hex('#F38BA8'))
+        start_btn = Button(text="Start Game", font_size=30, size_hint=(1, 0.2), background_color= get_color_from_hex('#A6E3A1'),font_name='Bungee-Regular.ttf')
+        settings_btn = Button(text="Settings", font_size=30, size_hint=(1, 0.2),background_color=get_color_from_hex('#89DCEB'),font_name='Bungee-Regular.ttf')
+        exit_btn = Button(text="Exit", font_size=30, size_hint=(1, 0.2), background_color=get_color_from_hex('#F38BA8'),font_name='Bungee-Regular.ttf')
         
         # ผูก Callback เมื่อกดปุ่ม 
         start_btn.bind(on_press=self.go_to_game)
@@ -141,7 +141,7 @@ class ResultScreen(Screen):
         title_label = Label(text="GAME OVER", font_size=50, bold=True, size_hint=(1, 0.3),color=get_color_from_hex('#F38BA8'))        
         self.wpm_label = Label(text="WPM: 0", font_size=40, size_hint=(1, 0.2),color=get_color_from_hex('#A6E3A1'))      
         self.acc_label = Label(text="Accuracy: 0%", font_size=40, size_hint=(1, 0.2),color=get_color_from_hex('#F9E2AF'))      
-        play_again_btn = Button(text="Play Again", font_size=30, size_hint=(1, 0.15), background_color=(0.2, 0.7, 0.3, 1),background_color=get_color_from_hex('#A6E3A1'))
+        play_again_btn = Button(text="Play Again", font_size=30, size_hint=(1, 0.15),background_color=get_color_from_hex('#A6E3A1'))
         menu_btn = Button(text="Main Menu", font_size=30, size_hint=(1, 0.15),background_color=get_color_from_hex('#89DCEB'))
         
         #  Bind (เชื่อมปุ่มกับฟังก์ชัน)
