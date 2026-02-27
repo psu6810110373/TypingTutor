@@ -22,7 +22,7 @@ class MainMenuScreen(Screen):
         # สร้าง Widget (Buttons)
         start_btn = Button(text="Start Game", font_size=30, size_hint=(1, 0.2), background_color= get_color_from_hex('#A6E3A1'))
         settings_btn = Button(text="Settings", font_size=30, size_hint=(1, 0.2),background_color=get_color_from_hex('#89DCEB'))
-        exit_btn = Button(text="Exit", font_size=30, size_hint=(1, 0.2), background_color=(0.8, 0.2, 0.2, 1))
+        exit_btn = Button(text="Exit", font_size=30, size_hint=(1, 0.2), background_color=get_color_from_hex('#F38BA8'))
         
         # ผูก Callback เมื่อกดปุ่ม 
         start_btn.bind(on_press=self.go_to_game)
