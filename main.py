@@ -51,14 +51,14 @@ class SettingsScreen(Screen):
         layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
 
         # สร้าง Widget (Labels)
-        title = Label(text="SETTINGS", font_size=50, bold=True, size_hint=(1, 0.3),color=get_color_from_hex('#89B4FA'))
-        subtitle = Label(text="Select Time Limit:", font_size=30, size_hint=(1, 0.1),color=get_color_from_hex('#CDD6F4'))
+        title = Label(text="SETTINGS", font_size=50, bold=True, size_hint=(1, 0.3),color=get_color_from_hex('#89B4FA'),font_name='Bungee-Regular.ttf')
+        subtitle = Label(text="Select Time Limit:", font_size=30, size_hint=(1, 0.1),color=get_color_from_hex('#CDD6F4'),font_name='Bungee-Regular.ttf')
 
         # สร้าง Widget (Buttons สำหรับเลือกเวลา)
         time_layout = BoxLayout(orientation='horizontal', spacing=20, size_hint=(1, 0.2))
-        self.btn_15 = Button(text="15 Sec", font_size=30, background_color=(0.5, 0.5, 0.5, 1))
-        self.btn_30 = Button(text="30 Sec", font_size=30, background_color=(0.2, 0.7, 0.3, 1)) 
-        self.btn_60 = Button(text="60 Sec", font_size=30, background_color=(0.5, 0.5, 0.5, 1))
+        self.btn_15 = Button(text="15 Sec", font_size=30, background_color=(0.5, 0.5, 0.5, 1),font_name='Bungee-Regular.ttf')
+        self.btn_30 = Button(text="30 Sec", font_size=30, background_color=(0.2, 0.7, 0.3, 1),font_name='Bungee-Regular.ttf') 
+        self.btn_60 = Button(text="60 Sec", font_size=30, background_color=(0.5, 0.5, 0.5, 1),font_name='Bungee-Regular.ttf')
         
         # ผูก Callbacks ให้ตรวจจับการกดปุ่ม
         self.btn_15.bind(on_press=self.set_time_15)
@@ -71,7 +71,7 @@ class SettingsScreen(Screen):
         time_layout.add_widget(self.btn_60)
 
         #ปุ่มเมนูหลัก
-        back_btn = Button(text="Back to Menu", font_size=30, size_hint=(1, 0.2),background_color=get_color_from_hex('#F38BA8'))
+        back_btn = Button(text="Back to Menu", font_size=30, size_hint=(1, 0.2),background_color=get_color_from_hex('#F38BA8'),font_name='Bungee-Regular.ttf')
         back_btn.bind(on_press=self.go_back)
 
         #นำแต่ละwidgetใส่ในlayout
