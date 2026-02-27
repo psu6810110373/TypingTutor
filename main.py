@@ -115,12 +115,12 @@ class GameScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
-        layout.add_widget(Label(text="Game Screen", font_size=40))
+        layout.add_widget(Label(text="Game Screen", font_size=40, font_name='Bungee-Regular.ttf'))
         
-        finish_btn = Button(text="Simulate Finish (Go to Result)", font_size=30, size_hint=(1, 0.2), background_color=(0.8, 0.5, 0.2, 1))
+        finish_btn = Button(text="Simulate Finish (Go to Result)", font_size=30, size_hint=(1, 0.2), background_color=(0.8, 0.5, 0.2, 1),font_name='Bungee-Regular.ttf')
         finish_btn.bind(on_press=self.go_to_result)
         
-        back_btn = Button(text="Give Up (Back to Menu)", font_size=30, size_hint=(1, 0.2))
+        back_btn = Button(text="Give Up (Back to Menu)", font_size=30, size_hint=(1, 0.2),font_name='Bungee-Regular.ttf')
         back_btn.bind(on_press=self.go_back)
         
         layout.add_widget(finish_btn) 
