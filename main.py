@@ -138,11 +138,11 @@ class ResultScreen(Screen):
         layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
 
         # สร้าง Widget (Labels, Buttons)
-        title_label = Label(text="GAME OVER", font_size=50, bold=True, size_hint=(1, 0.3),color=get_color_from_hex('#F38BA8'))        
-        self.wpm_label = Label(text="WPM: 0", font_size=40, size_hint=(1, 0.2),color=get_color_from_hex('#A6E3A1'))      
-        self.acc_label = Label(text="Accuracy: 0%", font_size=40, size_hint=(1, 0.2),color=get_color_from_hex('#F9E2AF'))      
-        play_again_btn = Button(text="Play Again", font_size=30, size_hint=(1, 0.15),background_color=get_color_from_hex('#A6E3A1'))
-        menu_btn = Button(text="Main Menu", font_size=30, size_hint=(1, 0.15),background_color=get_color_from_hex('#89DCEB'))
+        title_label = Label(text="GAME OVER", font_size=50, bold=True, size_hint=(1, 0.3),color=get_color_from_hex('#F38BA8'),font_name='Bungee-Regular.ttf')        
+        self.wpm_label = Label(text="WPM: 0", font_size=40, size_hint=(1, 0.2),color=get_color_from_hex('#A6E3A1'),font_name='Bungee-Regular.ttf')      
+        self.acc_label = Label(text="Accuracy: 0%", font_size=40, size_hint=(1, 0.2),color=get_color_from_hex('#F9E2AF'),font_name='Bungee-Regular.ttf')      
+        play_again_btn = Button(text="Play Again", font_size=30, size_hint=(1, 0.15),background_color=get_color_from_hex('#A6E3A1'),font_name='Bungee-Regular.ttf')
+        menu_btn = Button(text="Main Menu", font_size=30, size_hint=(1, 0.15),background_color=get_color_from_hex('#89DCEB'),font_name='Bungee-Regular.ttf')
         
         #  Bind (เชื่อมปุ่มกับฟังก์ชัน)
         play_again_btn.bind(on_press=self.play_again)
