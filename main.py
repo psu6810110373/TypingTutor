@@ -138,7 +138,7 @@ class ResultScreen(Screen):
         layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
 
         # สร้าง Widget (Labels, Buttons)
-        title_label = Label(text="GAME OVER", font_size=50, bold=True, size_hint=(1, 0.3))        
+        title_label = Label(text="GAME OVER", font_size=50, bold=True, size_hint=(1, 0.3),color=get_color_from_hex('#F38BA8'))        
         self.wpm_label = Label(text="WPM: 0", font_size=40, size_hint=(1, 0.2))      
         self.acc_label = Label(text="Accuracy: 0%", font_size=40, size_hint=(1, 0.2))      
         play_again_btn = Button(text="Play Again", font_size=30, size_hint=(1, 0.15), background_color=(0.2, 0.7, 0.3, 1))
