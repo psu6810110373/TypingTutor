@@ -194,6 +194,8 @@ class GameScreen(Screen):
             return False
         self.total_keystrokes += 1
         self.correct_keystrokes += 1 # สมมติว่าพิมพ์ถูกทุกตัวไปก่อน
+
+        print(f"Key pressed: {codepoint}")
             
         return True
 
