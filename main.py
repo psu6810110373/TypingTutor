@@ -145,6 +145,7 @@ class GameScreen(Screen):
         self.is_playing = False
         self.word_list = ["python", "keyboard", "developer", "kivy", "variable", "function", "screen", "button", "project", "system"]
         self.current_word = ""
+        self.typed_word = ""
 
     def go_back(self, instance):
         self.manager.current = 'menu'
