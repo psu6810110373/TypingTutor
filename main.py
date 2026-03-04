@@ -236,6 +236,7 @@ class GameScreen(Screen):
     
     def get_new_word(self):
         self.current_word = random.choice(self.word_list)
+        self.typed_word = ""
 
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
