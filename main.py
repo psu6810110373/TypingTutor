@@ -142,12 +142,26 @@ class GameScreen(Screen):
         self.total_keystrokes = 0
         self.correct_keystrokes = 0
         self.is_playing = False
-        
+
     def go_back(self, instance):
         self.manager.current = 'menu'
 
     def update_labels(self):
         self.time_label.text = f"Time: {self.time_left}"
+
+    def start_game(self):
+        # ดึงเวลามาจากหน้า Settings ที่คนที่ 1 ทำไว้
+        settings_screen = self.manager.get_screen('settings')
+        self.time_left = settings_screen.selected_time
+        
+        # รีเซ็ตค่าคะแนนต่างๆ
+        self.total_keystrokes = 0
+        self.correct_keystrokes = 0
+        self.is_playing = True
+        
+        self.update_labels()
+        # สั่งให้นาฬิกาเดิน (เรียกฟังก์ชัน update_timer ทุกๆ 1 วินาที)
+        Clock.schedule_interval(self.update_timer, 1.0)
 
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
