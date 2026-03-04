@@ -188,6 +188,13 @@ class GameScreen(Screen):
     def on_leave(self):
         self.stop_game()
 
+    def _on_keyboard_down(self, window, key, scancode, codepoint, modifier):
+        # ถ้าเกมยังไม่เริ่ม หรือกดปุ่มแปลกๆ (Shift, Ctrl) ให้ข้ามไป
+        if not self.is_playing or codepoint is None:
+            return False
+            
+        return True
+
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
