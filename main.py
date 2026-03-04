@@ -172,6 +172,9 @@ class GameScreen(Screen):
         if self.time_left > 0:
             self.time_left -= 1
             self.update_labels()
+
+            if self.time_left <= 5:
+                self.time_label.color = get_color_from_hex('#F38BA8')
         else:
             self.end_game()
 
