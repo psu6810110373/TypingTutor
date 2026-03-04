@@ -233,6 +233,9 @@ class GameScreen(Screen):
 
             self.wpm_label.text = f"WPM: {wpm}"
             self.acc_label.text = f"Acc: {acc}%"
+    
+    def get_new_word(self):
+        pass
 
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
