@@ -178,6 +178,12 @@ class GameScreen(Screen):
         self.stop_game()
         self.manager.current = 'result'
 
+    def on_enter(self):
+        self.start_game()
+
+    def on_leave(self):
+        self.stop_game()
+
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
