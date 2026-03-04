@@ -181,6 +181,7 @@ class GameScreen(Screen):
     def end_game(self):
         self.stop_game()
         result_screen = self.manager.get_screen('result')
+        result_screen.wpm_label.text = self.wpm_label.text
         self.manager.current = 'result'
 
     def on_enter(self):
