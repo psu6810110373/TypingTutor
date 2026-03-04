@@ -115,23 +115,20 @@ class SettingsScreen(Screen):
 class GameScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
-        layout.add_widget(Label(text="Game Screen", font_size=40, font_name='Bungee-Regular.ttf'))
+        self.layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
         
-        finish_btn = Button(text="Simulate Finish (Go to Result)", font_size=30, size_hint=(1, 0.2), background_color=(0.8, 0.5, 0.2, 1),font_name='Bungee-Regular.ttf')
-        finish_btn.bind(on_press=self.go_to_result)
+        # --- แถบสถานะด้านบน ---
+        self.stats_layout = BoxLayout(orientation='horizontal', size_hint=(1, 0.2))
+        self.time_label = Label(text="Time: 00", font_size=40, color=get_color_from_hex('#F9E2AF'), font_name='Bungee-Regular.ttf')
+        self.wpm_label = Label(text="WPM: 0", font_size=40, color=get_color_from_hex('#A6E3A1'), font_name='Bungee-Regular.ttf')
+        self.acc_label = Label(text="Acc: 0%", font_size=40, color=get_color_from_hex('#89B4FA'), font_name='Bungee-Regular.ttf')
         
-        back_btn = Button(text="Give Up (Back to Menu)", font_size=30, size_hint=(1, 0.2),font_name='Bungee-Regular.ttf')
-        back_btn.bind(on_press=self.go_back)
+        self.stats_layout.add_widget(self.time_label)
+        self.stats_layout.add_widget(self.wpm_label)
+        self.stats_layout.add_widget(self.acc_label)
         
-        layout.add_widget(finish_btn) 
-        layout.add_widget(back_btn)
-        self.add_widget(layout)
-
-    def go_back(self, instance):
-        self.manager.current = 'menu'
-    def go_to_result(self, instance):
-        self.manager.current = 'result'
+        self.layout.add_widget(self.stats_layout)
+        self.add_widget(self.layout)
 
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
