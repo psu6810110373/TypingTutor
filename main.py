@@ -192,6 +192,8 @@ class GameScreen(Screen):
         # ถ้าเกมยังไม่เริ่ม หรือกดปุ่มแปลกๆ (Shift, Ctrl) ให้ข้ามไป
         if not self.is_playing or codepoint is None:
             return False
+        self.total_keystrokes += 1
+        self.correct_keystrokes += 1 # สมมติว่าพิมพ์ถูกทุกตัวไปก่อน
             
         return True
 
