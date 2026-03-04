@@ -216,6 +216,9 @@ class GameScreen(Screen):
             else:
                 acc = 0
 
+            self.wpm_label.text = f"WPM: {wpm}"
+            self.acc_label.text = f"Acc: {acc}%"
+
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
