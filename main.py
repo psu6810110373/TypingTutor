@@ -235,7 +235,7 @@ class GameScreen(Screen):
             self.acc_label.text = f"Acc: {acc}%"
     
     def get_new_word(self):
-        pass
+        self.current_word = random.choice(self.word_list)
 
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
