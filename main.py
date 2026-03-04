@@ -198,6 +198,14 @@ class GameScreen(Screen):
         print(f"Key pressed: {codepoint}")
             
         return True
+    
+    def calculate_stats(self):
+        settings_time = self.manager.get_screen('settings').selected_time
+        time_elapsed = settings_time - self.time_left
+        
+        # ป้องกัน Error หารด้วยศูนย์
+        if time_elapsed > 0:
+            pass # เดี๋ยวมาเขียนสูตรใส่ตรงนี้
 
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
