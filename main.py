@@ -211,6 +211,11 @@ class GameScreen(Screen):
             minutes_elapsed = time_elapsed / 60.0
             wpm = int(words_typed / minutes_elapsed)
 
+            if self.total_keystrokes > 0:
+                acc = int((self.correct_keystrokes / self.total_keystrokes) * 100) 
+            else:
+                acc = 0
+
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
