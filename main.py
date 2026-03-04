@@ -205,9 +205,11 @@ class GameScreen(Screen):
         settings_time = self.manager.get_screen('settings').selected_time
         time_elapsed = settings_time - self.time_left
         
-        # ป้องกัน Error หารด้วยศูนย์
         if time_elapsed > 0:
-            pass # เดี๋ยวมาเขียนสูตรใส่ตรงนี้
+            # --- ลบ pass ทิ้ง แล้วใส่โค้ดนี้แทน ---
+            words_typed = self.correct_keystrokes / 5.0
+            minutes_elapsed = time_elapsed / 60.0
+            wpm = int(words_typed / minutes_elapsed)
 
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
