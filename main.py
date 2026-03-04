@@ -161,6 +161,8 @@ class GameScreen(Screen):
 
         self.wpm_label.text = "WPM: 0"
         self.acc_label.text = "Acc: 0%"
+
+        self.time_label.color = get_color_from_hex('#F9E2AF')
         
         self.update_labels()
         # สั่งให้นาฬิกาเดิน (เรียกฟังก์ชัน update_timer ทุกๆ 1 วินาที)
