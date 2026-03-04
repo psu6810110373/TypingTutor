@@ -162,6 +162,8 @@ class GameScreen(Screen):
         self.update_labels()
         # สั่งให้นาฬิกาเดิน (เรียกฟังก์ชัน update_timer ทุกๆ 1 วินาที)
         Clock.schedule_interval(self.update_timer, 1.0)
+
+        Window.bind(on_key_down=self._on_keyboard_down)
     
     def update_timer(self, dt):
         if self.time_left > 0:
