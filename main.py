@@ -130,7 +130,7 @@ class GameScreen(Screen):
         
         self.layout.add_widget(self.stats_layout)
         # --- พื้นที่แสดงคำศัพท์ ---
-        self.word_display = Label(text="(Person 3 will add words here)", font_size=40, size_hint=(1, 0.6), font_name='Bungee-Regular.ttf')
+        self.word_display = Label(text="Loading...", font_size=60, size_hint=(1, 0.6), font_name='Bungee-Regular.ttf', markup=True)
         self.layout.add_widget(self.word_display)
         # --- ปุ่มยอมแพ้ ---
         self.back_btn = Button(text="Give Up", font_size=30, size_hint=(1, 0.2), background_color=get_color_from_hex('#F38BA8'), font_name='Bungee-Regular.ttf')
