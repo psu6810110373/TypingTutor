@@ -158,6 +158,9 @@ class GameScreen(Screen):
         self.total_keystrokes = 0
         self.correct_keystrokes = 0
         self.is_playing = True
+
+        self.wpm_label.text = "WPM: 0"
+        self.acc_label.text = "Acc: 0%"
         
         self.update_labels()
         # สั่งให้นาฬิกาเดิน (เรียกฟังก์ชัน update_timer ทุกๆ 1 วินาที)
