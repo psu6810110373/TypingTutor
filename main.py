@@ -170,6 +170,14 @@ class GameScreen(Screen):
         else:
             self.end_game()
 
+    def stop_game(self):
+        self.is_playing = False
+        Clock.unschedule(self.update_timer) # สั่งหยุดนาฬิกา
+
+    def end_game(self):
+        self.stop_game()
+        self.manager.current = 'result'
+
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
