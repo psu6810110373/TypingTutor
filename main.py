@@ -162,6 +162,13 @@ class GameScreen(Screen):
         self.update_labels()
         # สั่งให้นาฬิกาเดิน (เรียกฟังก์ชัน update_timer ทุกๆ 1 วินาที)
         Clock.schedule_interval(self.update_timer, 1.0)
+    
+    def update_timer(self, dt):
+        if self.time_left > 0:
+            self.time_left -= 1
+            self.update_labels()
+        else:
+            self.end_game()
 
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
