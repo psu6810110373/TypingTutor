@@ -142,6 +142,12 @@ class GameScreen(Screen):
         self.total_keystrokes = 0
         self.correct_keystrokes = 0
         self.is_playing = False
+        
+    def go_back(self, instance):
+        self.manager.current = 'menu'
+
+    def update_labels(self):
+        self.time_label.text = f"Time: {self.time_left}"
 
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
