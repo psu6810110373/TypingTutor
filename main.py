@@ -128,6 +128,13 @@ class GameScreen(Screen):
         self.stats_layout.add_widget(self.acc_label)
         
         self.layout.add_widget(self.stats_layout)
+        # --- พื้นที่แสดงคำศัพท์ ---
+        self.word_display = Label(text="(Person 3 will add words here)", font_size=40, size_hint=(1, 0.6), font_name='Bungee-Regular.ttf')
+        self.layout.add_widget(self.word_display)
+        # --- ปุ่มยอมแพ้ ---
+        self.back_btn = Button(text="Give Up", font_size=30, size_hint=(1, 0.2), background_color=get_color_from_hex('#F38BA8'), font_name='Bungee-Regular.ttf')
+        self.back_btn.bind(on_press=self.go_back)
+        self.layout.add_widget(self.back_btn)
         self.add_widget(self.layout)
 
 class ResultScreen(Screen):
