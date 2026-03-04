@@ -137,6 +137,12 @@ class GameScreen(Screen):
         self.layout.add_widget(self.back_btn)
         self.add_widget(self.layout)
 
+        # --- ตัวแปรสำหรับคำนวณเกม ---
+        self.time_left = 0
+        self.total_keystrokes = 0
+        self.correct_keystrokes = 0
+        self.is_playing = False
+
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
