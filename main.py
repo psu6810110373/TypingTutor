@@ -176,6 +176,8 @@ class GameScreen(Screen):
         self.is_playing = False
         Clock.unschedule(self.update_timer) # สั่งหยุดนาฬิกา
 
+        Window.unbind(on_key_down=self._on_keyboard_down)
+
     def end_game(self):
         self.stop_game()
         self.manager.current = 'result'
