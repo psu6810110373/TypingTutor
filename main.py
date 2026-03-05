@@ -218,6 +218,8 @@ class GameScreen(Screen):
                 self.get_new_word()
                 self.update_word_display()
             return True
+        if len(self.typed_word) >= len(self.current_word):
+            return True
 
         self.calculate_stats()
             
