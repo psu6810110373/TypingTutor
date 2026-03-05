@@ -261,7 +261,7 @@ class GameScreen(Screen):
         self.typed_word = ""
 
     def update_word_display(self):
-        self.word_display.text = self.current_word
+        display_text = ""
 
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
