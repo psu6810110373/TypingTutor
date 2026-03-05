@@ -205,37 +205,46 @@ class GameScreen(Screen):
         self.stop_game()
 
     def _on_keyboard_down(self, window, key, scancode, codepoint, modifier):
-        # ถ้าเกมยังไม่เริ่ม หรือกดปุ่มแปลกๆ (Shift, Ctrl) ให้ข้ามไป
-        if not self.is_playing or codepoint is None:
+        # 0. เช็คแค่ว่าเกมเริ่มหรือยัง
+        if not self.is_playing:
             return False
-        
-        if key == 8: # Backspace
+
+        # 1. ระบบกดปุ่มลบ (Backspace รหัสคือ 8) ต้องมาอยู่ตรงนี้!
+        if key == 8: 
             if len(self.typed_word) > 0:
                 self.typed_word = self.typed_word[:-1]
                 self.update_word_display()
             return True
-        
+
+        # ค่อยดักพวกปุ่มแปลกๆ (Shift, Ctrl) ตรงนี้
+        if codepoint is None:
+            return False
+
+        # 2. ระบบกด Spacebar เพื่อเปลี่ยนคำถัดไป
         if codepoint == ' ':
             if self.typed_word == self.current_word:
                 self.get_new_word()
                 self.update_word_display()
             return True
-        
+
+        # 3. ป้องกันการพิมพ์เกินจำนวนตัวอักษรของคำนั้น
         if len(self.typed_word) >= len(self.current_word):
             return True
-        
+
+        # 4. เช็คว่าพิมพ์ถูกไหม (เอาตัวอักษรมาเทียบกัน)
         expected_char = self.current_word[len(self.typed_word)]
         self.total_keystrokes += 1
-
-        if codepoint == expected_char:
-            self.correct_keystrokes += 1
         
-        self.update_word_display()
-        self.calculate_stats()
+        # ถ้าพิมพ์ถูก ให้บวกคะแนนความแม่นยำ
+        if codepoint == expected_char:
+            self.correct_keystrokes += 1 
 
         self.typed_word += codepoint
+        
+        # 5. อัปเดตหน้าจอ และคำนวณคะแนน
+        self.update_word_display()
         self.calculate_stats()
-            
+        
         return True
     
     def calculate_stats(self):
