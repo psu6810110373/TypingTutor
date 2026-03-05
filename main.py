@@ -263,7 +263,10 @@ class GameScreen(Screen):
     def update_word_display(self):
         display_text = ""
         for i, char in enumerate(self.current_word):
-            pass
+            if i < len(self.typed_word):
+                pass
+            else:
+                pass
 
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
