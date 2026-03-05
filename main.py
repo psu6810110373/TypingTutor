@@ -266,7 +266,7 @@ class GameScreen(Screen):
             if i < len(self.typed_word):
                 pass
             else:
-                pass
+                display_text += f"[color=#CDD6F4]{char}[/color]"
 
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
