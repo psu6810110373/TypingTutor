@@ -267,6 +267,7 @@ class GameScreen(Screen):
                 display_text += f"[color=#A6E3A1]{char}[/color]"
             else:
                 display_text += f"[color=#CDD6F4]{char}[/color]"
+        self.word_display.text = display_text
 
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
