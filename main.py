@@ -208,6 +208,8 @@ class GameScreen(Screen):
         # ถ้าเกมยังไม่เริ่ม หรือกดปุ่มแปลกๆ (Shift, Ctrl) ให้ข้ามไป
         if not self.is_playing or codepoint is None:
             return False
+        if key == 8: # Backspace
+            pass
 
         self.calculate_stats()
             
