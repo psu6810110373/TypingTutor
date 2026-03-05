@@ -213,8 +213,11 @@ class GameScreen(Screen):
                 self.typed_word = self.typed_word[:-1]
                 self.update_word_display()
             return True
-        if codepoint is None:
-            return False
+        if codepoint == ' ':
+            if self.typed_word == self.current_word:
+                self.get_new_word()
+                self.update_word_display()
+            return True
 
         self.calculate_stats()
             
