@@ -229,6 +229,9 @@ class GameScreen(Screen):
 
         if codepoint == expected_char:
             self.correct_keystrokes += 1
+        
+        self.update_word_display()
+        self.calculate_stats()
 
         self.typed_word += codepoint
         self.calculate_stats()
