@@ -167,7 +167,8 @@ class GameScreen(Screen):
         self.acc_label.text = "Acc: 0%"
 
         self.time_label.color = get_color_from_hex('#F9E2AF')
-        
+        self.get_new_word() # <--- เพิ่มตรงนี้
+
         self.update_labels()
         # สั่งให้นาฬิกาเดิน (เรียกฟังก์ชัน update_timer ทุกๆ 1 วินาที)
         Clock.schedule_interval(self.update_timer, 1.0)
