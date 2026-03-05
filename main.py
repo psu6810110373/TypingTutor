@@ -209,7 +209,10 @@ class GameScreen(Screen):
         if not self.is_playing or codepoint is None:
             return False
         if key == 8: # Backspace
-            pass
+            if len(self.typed_word) > 0:
+                self.typed_word = self.typed_word[:-1]
+                self.update_word_display()
+            return True
 
         self.calculate_stats()
             
