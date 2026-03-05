@@ -225,8 +225,10 @@ class GameScreen(Screen):
             return True
         
         expected_char = self.current_word[len(self.typed_word)]
-        
         self.total_keystrokes += 1
+
+        if codepoint == expected_char:
+            self.correct_keystrokes += 1
 
         self.typed_word += codepoint
         self.calculate_stats()
