@@ -262,6 +262,8 @@ class GameScreen(Screen):
 
     def update_word_display(self):
         display_text = ""
+        for i, char in enumerate(self.current_word):
+            pass
 
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
@@ -274,7 +276,7 @@ class ResultScreen(Screen):
         self.acc_label = Label(text="Accuracy: 0%", font_size=40, size_hint=(1, 0.2),color=get_color_from_hex('#F9E2AF'),font_name='Bungee-Regular.ttf')      
         play_again_btn = Button(text="Play Again", font_size=30, size_hint=(1, 0.15),background_color=get_color_from_hex('#A6E3A1'),font_name='Bungee-Regular.ttf')
         menu_btn = Button(text="Main Menu", font_size=30, size_hint=(1, 0.15),background_color=get_color_from_hex('#89DCEB'),font_name='Bungee-Regular.ttf')
-        
+
         #  Bind (เชื่อมปุ่มกับฟังก์ชัน)
         play_again_btn.bind(on_press=self.play_again)
         menu_btn.bind(on_press=self.go_to_menu)
