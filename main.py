@@ -273,11 +273,14 @@ class GameScreen(Screen):
         display_text = ""
         for i, char in enumerate(self.current_word):
             if i < len(self.typed_word):
-                display_text += f"[color=#A6E3A1]{char}[/color]"
+                if self.typed_word[i] == char:
+                    display_text += f"[color=#A6E3A1]{char}[/color]"
+                else:
+                    display_text += f"[color=#F38BA8]{char}[/color]"
             else:
                 display_text += f"[color=#CDD6F4]{char}[/color]"
+                
         self.word_display.text = display_text
-
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
