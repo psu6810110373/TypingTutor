@@ -220,6 +220,8 @@ class GameScreen(Screen):
             return True
         if len(self.typed_word) >= len(self.current_word):
             return True
+        self.total_keystrokes += 1
+        self.typed_word += codepoint
 
         self.calculate_stats()
             
