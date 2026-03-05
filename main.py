@@ -208,21 +208,27 @@ class GameScreen(Screen):
         # ถ้าเกมยังไม่เริ่ม หรือกดปุ่มแปลกๆ (Shift, Ctrl) ให้ข้ามไป
         if not self.is_playing or codepoint is None:
             return False
+        
         if key == 8: # Backspace
             if len(self.typed_word) > 0:
                 self.typed_word = self.typed_word[:-1]
                 self.update_word_display()
             return True
+        
         if codepoint == ' ':
             if self.typed_word == self.current_word:
                 self.get_new_word()
                 self.update_word_display()
             return True
+        
         if len(self.typed_word) >= len(self.current_word):
             return True
+        
+        expected_char = self.current_word[len(self.typed_word)]
+        
         self.total_keystrokes += 1
-        self.typed_word += codepoint
 
+        self.typed_word += codepoint
         self.calculate_stats()
             
         return True
