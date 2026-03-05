@@ -264,7 +264,7 @@ class GameScreen(Screen):
         display_text = ""
         for i, char in enumerate(self.current_word):
             if i < len(self.typed_word):
-                pass
+                display_text += f"[color=#A6E3A1]{char}[/color]"
             else:
                 display_text += f"[color=#CDD6F4]{char}[/color]"
 
