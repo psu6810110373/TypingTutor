@@ -8,6 +8,8 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.utils import get_color_from_hex
 from kivy.core.audio import SoundLoader
+from kivy.uix.widget import Widget
+from kivy.graphics import Color, Rectangle, Ellipse
 
 Window.size = (900, 600)
 Window.clearcolor = get_color_from_hex('#1E1E2E')
@@ -117,6 +119,45 @@ class SettingsScreen(Screen):
     def go_back(self, instance):
         self.manager.current = 'menu'
 
+class PlayerCloud(Widget):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.size_hint = (None, None)
+        self.size = (100, 50)
+        # ตั้งตำแหน่งให้อยู่ตรงกลางจอ และลอยสูงขึ้นมาที่พิกัด Y=250
+        self.pos = (Window.width/2 - 50, 250) 
+        with self.canvas:
+            Color(0.8, 0.9, 1, 1) # สีฟ้าขาว (ก้อนเมฆ)
+            self.rect = Ellipse(pos=self.pos, size=self.size)
+        self.bind(pos=self.update_graphics_pos)
+        
+    def update_graphics_pos(self, instance, value):
+        self.rect.pos = instance.pos
+
+class WordItem(Label):
+    def __init__(self, text='', **kwargs):
+        kwargs['text'] = text
+        super().__init__(**kwargs)
+        self.font_size = 30
+        self.font_name = 'Bungee-Regular.ttf'
+        self.color = get_color_from_hex('#CDD6F4')
+        self.size_hint = (None, None)
+        self.size = (150, 50)
+        self.valign = 'center'
+        self.halign = 'center'
+        # สุ่มให้เกิดแบบสุ่มแกน X และอยู่บนสุดของจอ (แกน Y)
+        self.pos = (random.randint(50, Window.width - 200), Window.height)
+        self.speed = random.uniform(50, 100) # ความเร็วในการตก
+
+class Lava(Widget):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.size_hint = (1, None)
+        self.size = (Window.width, 100) # ลาวาสูง 100
+        self.pos = (0, 0) # อยู่ติดขอบล่างสุด
+        with self.canvas:
+            Color(rgba=get_color_from_hex('#F38BA8')) # สีแดงลาวา
+            self.rect = Rectangle(pos=self.pos, size=self.size)
 
 class GameScreen(Screen):
     def __init__(self, **kwargs):
@@ -213,6 +254,8 @@ class GameScreen(Screen):
 
     def on_enter(self):
         self.start_game()
+        self.add_widget(Lava())
+        self.add_widget(PlayerCloud())
 
     def on_leave(self):
         self.stop_game()
