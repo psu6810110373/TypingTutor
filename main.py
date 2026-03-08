@@ -155,6 +155,8 @@ class GameScreen(Screen):
         self.correct_sound = SoundLoader.load('correct_sound.wav')
         self.wrong_sound = SoundLoader.load('wrong_sound.wav')
 
+        self.gameover_sound = SoundLoader.load('gameover_sound.wav')
+
     def go_back(self, instance):
         self.manager.current = 'menu'
 
@@ -201,6 +203,9 @@ class GameScreen(Screen):
 
     def end_game(self):
         self.stop_game()
+        if self.gameover_sound:
+            self.gameover_sound.play()
+
         result_screen = self.manager.get_screen('result')
         result_screen.wpm_label.text = self.wpm_label.text
         result_screen.acc_label.text = self.acc_label.text
