@@ -162,171 +162,51 @@ class Lava(Widget):
 class GameScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
-     
-        # --- แถบสถานะด้านบน ---
-        self.stats_layout = BoxLayout(orientation='horizontal', size_hint=(1, 0.2))
-        self.time_label = Label(text="Time: 00", font_size=40, color=get_color_from_hex('#F9E2AF'), font_name='Bungee-Regular.ttf')
-        self.wpm_label = Label(text="WPM: 0", font_size=40, color=get_color_from_hex('#A6E3A1'), font_name='Bungee-Regular.ttf')
-        self.acc_label = Label(text="Acc: 0%", font_size=40, color=get_color_from_hex('#89B4FA'), font_name='Bungee-Regular.ttf')
-        
-        self.stats_layout.add_widget(self.time_label)
-        self.stats_layout.add_widget(self.wpm_label)
-        self.stats_layout.add_widget(self.acc_label)
-        
-        self.layout.add_widget(self.stats_layout)
-        # --- พื้นที่แสดงคำศัพท์ ---
-        self.word_display = Label(text="Loading...", font_size=60, size_hint=(1, 0.6), font_name='Bungee-Regular.ttf', markup=True)
-        self.layout.add_widget(self.word_display)
-        # --- ปุ่มยอมแพ้ ---
-        self.back_btn = Button(text="Give Up", font_size=30, size_hint=(1, 0.2), background_color=get_color_from_hex('#F38BA8'), font_name='Bungee-Regular.ttf')
-        self.back_btn.bind(on_press=self.go_back)
-        self.layout.add_widget(self.back_btn)
-        self.add_widget(self.layout)
-
-        # --- ตัวแปรสำหรับคำนวณเกม ---
-        self.time_left = 0
-        self.total_keystrokes = 0
-        self.correct_keystrokes = 0
-        self.is_playing = False
-        self.word_list = ["python", "keyboard", "developer", "kivy", "variable", "function", "screen", "button", "project", "system"]
-        self.current_word = ""
-        self.typed_word = ""
-
-        self.correct_sound = SoundLoader.load('correct_sound.wav')
-        self.wrong_sound = SoundLoader.load('wrong_sound.wav')
-
-        self.gameover_sound = SoundLoader.load('gameover_sound.wav')
-
-    def go_back(self, instance):
-        self.manager.current = 'menu'
-
-    def update_labels(self):
-        self.time_label.text = f"Time: {self.time_left}"
-
-    def start_game(self):
-        # ดึงเวลามาจากหน้า Settings ที่คนที่ 1 ทำไว้
-        settings_screen = self.manager.get_screen('settings')
-        self.time_left = settings_screen.selected_time
-        
-        # รีเซ็ตค่าคะแนนต่างๆ
-        self.total_keystrokes = 0
-        self.correct_keystrokes = 0
-        self.is_playing = True
-
-        self.wpm_label.text = "WPM: 0"
-        self.acc_label.text = "Acc: 0%"
-
-        self.time_label.color = get_color_from_hex('#F9E2AF')
-        self.get_new_word()
-        self.update_word_display()
-        self.update_labels()
-        # สั่งให้นาฬิกาเดิน (เรียกฟังก์ชัน update_timer ทุกๆ 1 วินาที)
-        Clock.schedule_interval(self.update_timer, 1.0)
-
-        Window.bind(on_key_down=self._on_keyboard_down)
-    
-    def update_timer(self, dt):
-        if self.time_left > 0:
-            self.time_left -= 1
-            self.update_labels()
-
-            if self.time_left <= 5:
-                self.time_label.color = get_color_from_hex('#F38BA8')
-        else:
-            self.end_game()
-
-    def stop_game(self):
-        self.is_playing = False
-        Clock.unschedule(self.update_timer) # สั่งหยุดนาฬิกา
-
-        Window.unbind(on_key_down=self._on_keyboard_down)
-
-    def end_game(self):
-        self.stop_game()
-        if self.gameover_sound:
-            self.gameover_sound.play()
-
-        result_screen = self.manager.get_screen('result')
-        result_screen.wpm_label.text = self.wpm_label.text
-        result_screen.acc_label.text = self.acc_label.text
-        self.manager.current = 'result'
+        self.time_limit = 30
+        self.game_active = False
 
     def on_enter(self):
-        self.start_game()
-        self.add_widget(Lava())
-        self.add_widget(PlayerCloud())
-
-    def on_leave(self):
-        self.stop_game()
-
-    def _on_keyboard_down(self, window, key, scancode, codepoint, modifier):
-        if not self.is_playing:
-            return False
-
-        if key == 8: 
-            if len(self.typed_word) > 0:
-                self.typed_word = self.typed_word[:-1]
-                self.update_word_display()
-            return True
-
-        if codepoint is None:
-            return False
-
-        if codepoint == ' ':
-            if self.typed_word == self.current_word:
-                self.get_new_word()
-                self.update_word_display()
-            return True
-
-        if len(self.typed_word) >= len(self.current_word):
-            return True
-
-        expected_char = self.current_word[len(self.typed_word)]
-        self.total_keystrokes += 1
-
-        if codepoint == expected_char:
-            self.correct_keystrokes += 1 
-            if self.correct_sound:
-                self.correct_sound.play()
-        else:
-            if self.wrong_sound:
-                self.wrong_sound.play()
-    
-    def calculate_stats(self):
-        settings_time = self.manager.get_screen('settings').selected_time
-        time_elapsed = settings_time - self.time_left
+        # 1. ล้างหน้าจอเก่าทิ้งทั้งหมด
+        self.clear_widgets()
         
-        if time_elapsed > 0:
-            # --- ลบ pass ทิ้ง แล้วใส่โค้ดนี้แทน ---
-            words_typed = self.correct_keystrokes / 5.0
-            minutes_elapsed = time_elapsed / 60.0
-            wpm = int(words_typed / minutes_elapsed)
+        # 2. วางลาวา และ เมฆผู้เล่น
+        self.lava = Lava()
+        self.add_widget(self.lava)
+        
+        self.player = PlayerCloud()
+        self.player.pos = (Window.width/2 - 50, 250) 
+        self.add_widget(self.player)
+        
+        # 3. สร้างแถบ HUD ด้านบน (เวลา, พลังชีวิต, คะแนน)
+        self.hud_layout = BoxLayout(orientation='horizontal', size_hint=(1, 0.1), pos=(0, Window.height - 50))
+        self.time_label = Label(text=f"Time: {self.time_limit}", font_size=30, color=get_color_from_hex('#89B4FA'), font_name='Bungee-Regular.ttf')
+        self.health_label = Label(text="Health: 3", font_size=30, color=get_color_from_hex('#F38BA8'), font_name='Bungee-Regular.ttf')
+        self.score_label = Label(text="Score: 0", font_size=30, color=get_color_from_hex('#A6E3A1'), font_name='Bungee-Regular.ttf')
+        
+        self.hud_layout.add_widget(self.time_label)
+        self.hud_layout.add_widget(self.health_label)
+        self.hud_layout.add_widget(self.score_label)
+        self.add_widget(self.hud_layout)
 
-            if self.total_keystrokes > 0:
-                acc = int((self.correct_keystrokes / self.total_keystrokes) * 100) 
-            else:
-                acc = 0
+        # 4. ข้อความสำหรับแสดงคำที่เรากำลังพิมพ์ (ลอยอยู่บนก้อนเมฆ)
+        self.current_input = Label(text="TYPE HERE...", font_size=40, size_hint=(None, None), size=(200, 50), pos=(Window.width/2 - 100, self.player.pos[1] + 60), color=get_color_from_hex('#F9E2AF'), font_name='Bungee-Regular.ttf')
+        self.add_widget(self.current_input)
 
-            self.wpm_label.text = f"WPM: {wpm}"
-            self.acc_label.text = f"Acc: {acc}%"
-    
-    def get_new_word(self):
-        self.current_word = random.choice(self.word_list)
+        # 5. ปุ่มยอมแพ้ (ย้ายไปไว้มุมขวาล่าง)
+        give_up_btn = Button(text="Give Up", font_size=20, size_hint=(None, None), size=(150, 50), pos=(Window.width - 160, 10), background_color=get_color_from_hex('#F38BA8'), font_name='Bungee-Regular.ttf')
+        give_up_btn.bind(on_press=self.give_up)
+        self.add_widget(give_up_btn)
+
+        # 6. รีเซ็ตตัวแปรเกม (เตรียมพร้อมสำหรับสเต็ป 3)
+        self.words = []
+        self.health = 3
+        self.score = 0
+        self.time_left = float(self.time_limit)
+        self.spawn_timer = 0
         self.typed_word = ""
 
-    def update_word_display(self):
-        display_text = ""
-        for i, char in enumerate(self.current_word):
-            if i < len(self.typed_word):
-                if self.typed_word[i] == char:
-                    display_text += f"[color=#A6E3A1]{char}[/color]"
-                else:
-                    display_text += f"[color=#F38BA8]{char}[/color]"
-            else:
-                display_text += f"[color=#CDD6F4]{char}[/color]"
-                
-        self.word_display.text = display_text
+    def give_up(self, instance):
+        self.manager.current = 'menu'
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
