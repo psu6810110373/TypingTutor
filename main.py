@@ -188,14 +188,12 @@ class GameScreen(Screen):
         self.player.pos = (Window.width/2 - 50, 250) 
         self.add_widget(self.player)
         
-        # 3. สร้างแถบ HUD ด้านบน (เวลา, พลังชีวิต, คะแนน)
+        # 3. สร้างแถบ HUD ด้านบน (เอา Health ออกไปแล้ว เหลือแค่เวลาและคะแนน)
         self.hud_layout = BoxLayout(orientation='horizontal', size_hint=(1, 0.1), pos=(0, Window.height - 50))
         self.time_label = Label(text=f"Time: {self.time_limit}", font_size=30, color=get_color_from_hex('#89B4FA'), font_name='Bungee-Regular.ttf')
-        self.health_label = Label(text="Health: 3", font_size=30, color=get_color_from_hex('#F38BA8'), font_name='Bungee-Regular.ttf')
         self.score_label = Label(text="Score: 0", font_size=30, color=get_color_from_hex('#A6E3A1'), font_name='Bungee-Regular.ttf')
         
         self.hud_layout.add_widget(self.time_label)
-        self.hud_layout.add_widget(self.health_label)
         self.hud_layout.add_widget(self.score_label)
         self.add_widget(self.hud_layout)
 
@@ -208,9 +206,8 @@ class GameScreen(Screen):
         give_up_btn.bind(on_press=self.give_up)
         self.add_widget(give_up_btn)
 
-        # 6. รีเซ็ตตัวแปรเกม 
+        # 6. รีเซ็ตตัวแปรเกม (เอา self.health ทิ้งไปแล้ว)
         self.words = []
-        self.health = 3
         self.score = 0
         self.time_left = float(self.time_limit)
         self.spawn_timer = 0
@@ -259,15 +256,13 @@ class GameScreen(Screen):
                 self.remove_widget(word_widget)
                 self.words.remove(word_widget)
                 
-                # หักเลือด และดึงตัวละครให้ต่ำลง
-                self.health -= 1
-                self.health_label.text = f"Health: {self.health}"
+                # ดึงตัวละครให้ต่ำลงมา (แทนการลดเลือด)
                 new_y = self.player.pos[1] - 40
                 self.player.pos = (self.player.pos[0], new_y)
                 self.current_input.pos = (Window.width/2 - 100, self.player.pos[1] + 60)
                 
-                # ถ้าตัวละครแตะลาวา หรือ เลือดหมด = ตาย!
-                if self.player.pos[1] <= self.lava.size[1] or self.health <= 0:
+                # เช็คการตาย: ถ้าตัวละครแตะลาวา = ตาย!
+                if self.player.pos[1] <= self.lava.size[1]:
                     self.end_game(win=False)
                     return
 
@@ -317,7 +312,7 @@ class GameScreen(Screen):
                 if self.correct_sound:
                     self.correct_sound.play()
                 
-                # ตัวผู้เล่นลอยขึ้นหนีลาวา
+                # ตัวผู้เล่นลอยขึ้นหนีลาวา (ยิ่งพิมพ์ถูก ยิ่งลอยสูง)
                 new_y = min(Window.height - 150, self.player.pos[1] + 30)
                 self.player.pos = (self.player.pos[0], new_y)
                 self.current_input.pos = (Window.width/2 - 100, self.player.pos[1] + 60)
@@ -333,7 +328,7 @@ class GameScreen(Screen):
         # ล้างคำที่พิมพ์รอไว้ เพื่อให้เริ่มพิมพ์คำใหม่ได้ทันที
         self.typed_word = ""
         self.current_input.text = self.typed_word
-
+        
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
