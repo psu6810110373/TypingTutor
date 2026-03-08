@@ -14,6 +14,9 @@ from kivy.graphics import Color, Rectangle, Ellipse
 Window.size = (900, 600)
 Window.clearcolor = get_color_from_hex('#1E1E2E')
 
+WORDS_LIST = ["PYTHON", "KIVY", "GAME", "CLOUD", "LAVA", "TYPE", "WORD", "JUMP", "ESCAPE", "SURVIVE", "SCREEN", "BUTTON", "WIDGET", "CLASS", "CODING", "TUTOR"]
+
+
 class MainMenuScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -44,6 +47,9 @@ class MainMenuScreen(Screen):
     # ฟังก์ชัน Callback สำหรับเปลี่ยนหน้าจอ
     def go_to_game(self, instance):
         App.get_running_app().play_click_sound()
+        settings_screen = self.manager.get_screen('settings')
+        game_screen = self.manager.get_screen('game')
+        game_screen.time_limit = settings_screen.selected_time
         self.manager.current = 'game' 
     def go_to_settings(self, instance):
         App.get_running_app().play_click_sound()
@@ -204,34 +210,111 @@ class GameScreen(Screen):
         self.time_left = float(self.time_limit)
         self.spawn_timer = 0
         self.typed_word = ""
+        self.game_active = True
+        Clock.schedule_interval(self.update, 1.0 / 60.0)
 
     def give_up(self, instance):
         self.manager.current = 'menu'
+    
+    def on_leave(self):
+        # ปิดการทำงานเมื่อออกจากหน้าจอ
+        Clock.unschedule(self.update)
+        self.game_active = False
+
+    def update(self, dt):
+        if not self.game_active:
+            return
+
+        # 1. ลดเวลาลงเรื่อยๆ
+        self.time_left -= dt
+        self.time_label.text = f"Time: {int(self.time_left)}"
+        
+        if self.time_left <= 0:
+            self.end_game(win=True) # เวลาหมด = รอดตาย!
+            return
+
+        # 2. สุ่มสร้างก้อนเมฆคำศัพท์ใหม่ ทุกๆ 1.5 วินาที
+        self.spawn_timer += dt
+        if self.spawn_timer > 1.5:
+            self.spawn_timer = 0
+            new_word_text = random.choice(WORDS_LIST)
+            new_word = WordItem(text=new_word_text)
+            self.words.append(new_word)
+            self.add_widget(new_word)
+
+        # 3. ทำให้เมฆทุกก้อนตกลงมา และเช็คการชน
+        for word_widget in self.words[:]:
+            word_widget.pos = (word_widget.pos[0], word_widget.pos[1] - word_widget.speed * dt)
+            
+            # ถ้าคำศัพท์ร่วงแตะลาวา
+            if word_widget.pos[1] <= self.lava.size[1]:
+                self.remove_widget(word_widget)
+                self.words.remove(word_widget)
+                
+                # หักเลือด และดึงตัวละครให้ต่ำลง
+                self.health -= 1
+                self.health_label.text = f"Health: {self.health}"
+                new_y = self.player.pos[1] - 40
+                self.player.pos = (self.player.pos[0], new_y)
+                self.current_input.pos = (Window.width/2 - 100, self.player.pos[1] + 60)
+                
+                # ถ้าตัวละครแตะลาวา หรือ เลือดหมด = ตาย!
+                if self.player.pos[1] <= self.lava.size[1] or self.health <= 0:
+                    self.end_game(win=False)
+                    return
+
+    def end_game(self, win):
+        self.game_active = False
+        Clock.unschedule(self.update)
+        
+        # ส่งค่าไปหน้าจอสรุปผล
+        result_screen = self.manager.get_screen('result')
+        result_screen.set_result(
+            win=win, 
+            score=self.score, 
+            time_survived=float(self.time_limit) - self.time_left
+        )
+        self.manager.current = 'result'
+
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
 
-        # สร้าง Widget (Labels, Buttons)
-        title_label = Label(text="GAME OVER", font_size=50, bold=True, size_hint=(1, 0.3),color=get_color_from_hex('#F38BA8'),font_name='Bungee-Regular.ttf')        
+        self.title_label = Label(text="GAME OVER", font_size=50, bold=True, size_hint=(1, 0.3),color=get_color_from_hex('#F38BA8'),font_name='Bungee-Regular.ttf')        
         self.wpm_label = Label(text="WPM: 0", font_size=40, size_hint=(1, 0.2),color=get_color_from_hex('#A6E3A1'),font_name='Bungee-Regular.ttf')      
-        self.acc_label = Label(text="Accuracy: 0%", font_size=40, size_hint=(1, 0.2),color=get_color_from_hex('#F9E2AF'),font_name='Bungee-Regular.ttf')      
+        self.acc_label = Label(text="Score: 0", font_size=40, size_hint=(1, 0.2),color=get_color_from_hex('#F9E2AF'),font_name='Bungee-Regular.ttf')      
+        
         play_again_btn = Button(text="Play Again", font_size=30, size_hint=(1, 0.15),background_color=get_color_from_hex('#A6E3A1'),font_name='Bungee-Regular.ttf')
         menu_btn = Button(text="Main Menu", font_size=30, size_hint=(1, 0.15),background_color=get_color_from_hex('#89DCEB'),font_name='Bungee-Regular.ttf')
-
-        #  Bind (เชื่อมปุ่มกับฟังก์ชัน)
+        
         play_again_btn.bind(on_press=self.play_again)
         menu_btn.bind(on_press=self.go_to_menu)
 
-        layout.add_widget(title_label)
+        layout.add_widget(self.title_label)
         layout.add_widget(self.wpm_label)
         layout.add_widget(self.acc_label)
         layout.add_widget(play_again_btn)
         layout.add_widget(menu_btn)
         self.add_widget(layout)
 
+    def set_result(self, win, score, time_survived):
+        if win:
+            self.title_label.text = "YOU SURVIVED!"
+            self.title_label.color = get_color_from_hex('#A6E3A1') # สีเขียว
+        else:
+            self.title_label.text = "GAME OVER"
+            self.title_label.color = get_color_from_hex('#F38BA8') # สีแดง
+            
+        minutes = max(time_survived / 60.0, 0.01)
+        wpm = round(score / minutes)
+        
+        self.wpm_label.text = f"WPM: {wpm}"
+        self.acc_label.text = f"Score: {score}"
+
     def play_again(self, instance):
         self.manager.current = 'game'
+        
     def go_to_menu(self, instance):
         self.manager.current = 'menu'
 
