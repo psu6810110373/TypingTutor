@@ -20,7 +20,7 @@ WORDS_LIST = ["PYTHON", "KIVY", "GAME", "CLOUD", "LAVA", "TYPE", "WORD", "JUMP",
 class MainMenuScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        
+    
         # ใช้ BoxLayout จัดเรียงจากบนลงล่าง
         layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
         
@@ -170,6 +170,11 @@ class GameScreen(Screen):
         super().__init__(**kwargs)
         self.time_limit = 30
         self.game_active = False
+        
+        # 1. โหลดไฟล์เสียงมาเก็บไว้ (แก้เป็น .mp3 หรือ .wav ตามที่คุณมีได้เลย)
+        self.correct_sound = SoundLoader.load('correct_sound.mp3')
+        self.wrong_sound = SoundLoader.load('wrong_sound.mp3')
+        self.gameover_sound = SoundLoader.load('gameover_sound.mp3')
 
     def on_enter(self):
         # 1. ล้างหน้าจอเก่าทิ้งทั้งหมด
@@ -203,13 +208,15 @@ class GameScreen(Screen):
         give_up_btn.bind(on_press=self.give_up)
         self.add_widget(give_up_btn)
 
-        # 6. รีเซ็ตตัวแปรเกม (เตรียมพร้อมสำหรับสเต็ป 3)
+        # 6. รีเซ็ตตัวแปรเกม 
         self.words = []
         self.health = 3
         self.score = 0
         self.time_left = float(self.time_limit)
         self.spawn_timer = 0
         self.typed_word = ""
+        
+        Window.bind(on_key_down=self._on_keyboard_down)
         self.game_active = True
         Clock.schedule_interval(self.update, 1.0 / 60.0)
 
@@ -219,6 +226,7 @@ class GameScreen(Screen):
     def on_leave(self):
         # ปิดการทำงานเมื่อออกจากหน้าจอ
         Clock.unschedule(self.update)
+        Window.unbind(on_key_down=self._on_keyboard_down)
         self.game_active = False
 
     def update(self, dt):
@@ -266,7 +274,12 @@ class GameScreen(Screen):
     def end_game(self, win):
         self.game_active = False
         Clock.unschedule(self.update)
+        Window.unbind(on_key_down=self._on_keyboard_down)
         
+        # 2. เล่นเสียง Game Over
+        if not win and self.gameover_sound:
+            self.gameover_sound.play()
+            
         # ส่งค่าไปหน้าจอสรุปผล
         result_screen = self.manager.get_screen('result')
         result_screen.set_result(
@@ -275,6 +288,51 @@ class GameScreen(Screen):
             time_survived=float(self.time_limit) - self.time_left
         )
         self.manager.current = 'result'
+
+    def _on_keyboard_down(self, window, keycode, scancode, text, modifiers):
+        if not self.game_active:
+            return False
+            
+        if keycode == 8: # กดปุ่มลบ (Backspace)
+            self.typed_word = self.typed_word[:-1]
+        elif keycode in (13, 271, 32): # กด Enter หรือ Spacebar เพื่อยิงคำศัพท์
+            self.check_word()
+        elif text and text.isalpha(): # พิมพ์ตัวอักษร
+            self.typed_word += text.upper()
+            
+        self.current_input.text = self.typed_word
+        return True
+
+    def check_word(self):
+        matched = False
+        for word_widget in self.words:
+            if word_widget.text == self.typed_word:
+                # --- พิมพ์ถูก! ยิงคำศัพท์ทิ้ง ---
+                self.remove_widget(word_widget)
+                self.words.remove(word_widget)
+                self.score += 1
+                self.score_label.text = f"Score: {self.score}"
+                
+                # เล่นเสียงพิมพ์ถูก
+                if self.correct_sound:
+                    self.correct_sound.play()
+                
+                # ตัวผู้เล่นลอยขึ้นหนีลาวา
+                new_y = min(Window.height - 150, self.player.pos[1] + 30)
+                self.player.pos = (self.player.pos[0], new_y)
+                self.current_input.pos = (Window.width/2 - 100, self.player.pos[1] + 60)
+                
+                matched = True
+                break
+                
+        # --- พิมพ์ผิด หรือกดยิงฟรี ---
+        if not matched and len(self.typed_word) > 0:
+            if self.wrong_sound:
+                self.wrong_sound.play()
+                
+        # ล้างคำที่พิมพ์รอไว้ เพื่อให้เริ่มพิมพ์คำใหม่ได้ทันที
+        self.typed_word = ""
+        self.current_input.text = self.typed_word
 
 class ResultScreen(Screen):
     def __init__(self, **kwargs):
