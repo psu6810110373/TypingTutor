@@ -118,8 +118,7 @@ class GameScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
-        self.correct_sound = SoundLoader.load('correct_sound.wav')
-        
+     
         # --- แถบสถานะด้านบน ---
         self.stats_layout = BoxLayout(orientation='horizontal', size_hint=(1, 0.2))
         self.time_label = Label(text="Time: 00", font_size=40, color=get_color_from_hex('#F9E2AF'), font_name='Bungee-Regular.ttf')
@@ -148,6 +147,9 @@ class GameScreen(Screen):
         self.word_list = ["python", "keyboard", "developer", "kivy", "variable", "function", "screen", "button", "project", "system"]
         self.current_word = ""
         self.typed_word = ""
+
+        self.correct_sound = SoundLoader.load('correct_sound.wav')
+        self.wrong_sound = SoundLoader.load('wrong_sound.wav')
 
     def go_back(self, instance):
         self.manager.current = 'menu'
