@@ -41,10 +41,13 @@ class MainMenuScreen(Screen):
         
     # ฟังก์ชัน Callback สำหรับเปลี่ยนหน้าจอ
     def go_to_game(self, instance):
+        App.get_running_app().play_click_sound()
         self.manager.current = 'game' 
     def go_to_settings(self, instance):
+        App.get_running_app().play_click_sound()
         self.manager.current = 'settings'        
     def exit_app(self, instance):
+        App.get_running_app().play_click_sound()
         App.get_running_app().stop()
 
 
@@ -88,6 +91,7 @@ class SettingsScreen(Screen):
 
     # สร้างฟังก์ชัน Callback สำหรับปุ่มเวลา
     def set_time_15(self, instance):
+        App.get_running_app().play_click_sound()
         self.selected_time = 15
         self.update_button_colors(self.btn_15)
         print(f"Time selected: {self.selected_time} seconds") # ปริ้นท์เช็คใน Console
@@ -234,16 +238,12 @@ class GameScreen(Screen):
         self.total_keystrokes += 1
 
         if codepoint == expected_char:
-            self.correct_keystrokes += 1
+            self.correct_keystrokes += 1 
             if self.correct_sound:
-                self.correct_sound.play() 
-
-        self.typed_word += codepoint
-
-        self.update_word_display()
-        self.calculate_stats()
-        
-        return True
+                self.correct_sound.play()
+        else:
+            if self.wrong_sound:
+                self.wrong_sound.play()
     
     def calculate_stats(self):
         settings_time = self.manager.get_screen('settings').selected_time
@@ -314,7 +314,12 @@ class TypingTutorApp(App):
         sm.add_widget(SettingsScreen(name='settings'))
         sm.add_widget(GameScreen(name='game'))
         sm.add_widget(ResultScreen(name='result'))
+        self.click_sound = SoundLoader.load('click_sound.wav')
         return sm
+    
+    def play_click_sound(self):
+        if self.click_sound:
+            self.click_sound.play()
 
 if __name__ == '__main__':
     TypingTutorApp().run()
