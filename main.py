@@ -118,6 +118,7 @@ class GameScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.layout = BoxLayout(orientation='vertical', padding=50, spacing=20)
+        self.correct_sound = SoundLoader.load('correct_sound.wav')
         
         # --- แถบสถานะด้านบน ---
         self.stats_layout = BoxLayout(orientation='horizontal', size_hint=(1, 0.2))
