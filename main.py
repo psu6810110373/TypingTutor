@@ -46,6 +46,10 @@ class MainMenuScreen(Screen):
         game_screen = self.manager.get_screen('game')
         game_screen.time_limit = settings_screen.selected_time
         self.manager.current = 'game' 
+
+        app = App.get_running_app()
+        if hasattr(app, 'bgm') and app.bgm:
+            app.bgm.play()
         
     def go_to_settings(self, instance):
         self.manager.current = 'settings'        
@@ -157,7 +161,7 @@ class GameScreen(Screen):
         self.gameover_sound = SoundLoader.load('gameover_sound.mp3')
         self.drop_sound = SoundLoader.load('wrong_sound.mp3') 
         
-        self.bg_images = ['istockphoto-1208374725-612x612.jpg', 'istockphoto-2080254800-640x640.jpg']
+        self.bg_images = ['istockphoto-2080254800-640x640.jpg','istockphoto-1208374725-612x612.jpg']
         self.current_bg_index = 0
 
     def on_enter(self):
@@ -218,6 +222,9 @@ class GameScreen(Screen):
         anim_out.start(self.bg)
 
     def give_up(self, instance):
+        app = App.get_running_app()
+        if hasattr(app, 'bgm') and app.bgm:
+            app.bgm.stop()
         self.manager.current = 'menu'
     
     def on_leave(self):
@@ -265,6 +272,10 @@ class GameScreen(Screen):
         Clock.unschedule(self.change_background)
         Window.unbind(on_key_down=self._on_keyboard_down)
         
+        app = App.get_running_app()
+        if hasattr(app, 'bgm') and app.bgm:
+            app.bgm.stop()
+
         if not win and self.gameover_sound:
             self.gameover_sound.play()
             
@@ -352,6 +363,9 @@ class ResultScreen(Screen):
         self.acc_label.text = f"Score: {score}"
 
     def play_again(self, instance):
+        app = App.get_running_app()
+        if hasattr(app, 'bgm') and app.bgm:
+            app.bgm.play()
         self.manager.current = 'game'
         
     def go_to_menu(self, instance):
@@ -370,7 +384,6 @@ class TypingTutorApp(App):
         if self.bgm:
             self.bgm.loop = True
             self.bgm.volume = 0.4 
-            self.bgm.play()
             
         return sm
 
